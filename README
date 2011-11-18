@@ -1,6 +1,10 @@
 Localizable gives you an easy way to define localizable fields in your
 MongoMapper::Document or MongoMapper::EmbeddedDocument.
 
+Installation
+
+    gem install localizable
+
 Example class definition:
 
     class Dummy
