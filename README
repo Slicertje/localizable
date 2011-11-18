@@ -1,0 +1,50 @@
+Localizable gives you an easy way to define localizable fields in your
+MongoMapper::Document or MongoMapper::EmbeddedDocument.
+
+Example class definition:
+
+    class Dummy
+
+        include MongoMapper::Document
+        include Localizable
+
+        localized_key :fieldname
+        localized_key :integer_field, Integer
+
+
+    end
+
+Assignment and fetching:
+
+    obj = Dummy.new
+    obj.fieldname = {
+        'en' => 'test 1',
+        'nl' => 'test 2'
+    }
+
+    obj.fieldname('en)' # returns 'test 1'
+    obj.fieldname('nl') # returns 'test 2'
+
+    obj.integer_field = {
+        'en => '1',
+        'nl' => '2'
+    }
+
+    obj.integer_field('en') # returns 1
+    obj.integer_field('nl') # returns 2
+
+You can define how to fetch the default locale and how to convert the locale
+to a string (it assumes that string is given in the assignment)
+
+    Localizable.fetch_default_locale = Proc.new do
+        Locale.first({ :default => true })
+    end
+
+    Localizable.locale_to_string = Proc.new do |locale|
+        locale.slug # assuming this is a string value
+    end
+
+    obj.fieldname # returns 'test 1' when Locale.first({ :default => true }).slug == 'en'
+
+
+
