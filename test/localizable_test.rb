@@ -20,8 +20,8 @@ class LocalizableTest < Test::Unit::TestCase
         assert_respond_to obj, :fieldname, 'fieldname'
         assert_respond_to obj, :fieldname=, 'fieldname='
 
-        assert DummyTest.key?(:fieldname_values), 'fieldname_values key exists'
-        assert_kind_of Hash, obj.fieldname_values
+        assert DummyTest.key?(:fieldname), 'fieldname key exists'
+        assert_kind_of Hash, obj[:fieldname]
     end
 
     def test_fetch_default_locale
@@ -68,13 +68,13 @@ class LocalizableTest < Test::Unit::TestCase
             'nl' => 'test 2'
         }
 
-        assert_equal({ 'en' => 'test 1', 'nl' => 'test 2' }, obj.fieldname_values)
+        assert_equal({ 'en' => 'test 1', 'nl' => 'test 2' }, obj[:fieldname])
 
         obj.fieldname = {
             'nl' => 'test 3'
         }
 
-        assert_equal({ 'en' => 'test 1', 'nl' => 'test 3' }, obj.fieldname_values)
+        assert_equal({ 'en' => 'test 1', 'nl' => 'test 3' }, obj[:fieldname])
     end
 
     def test_locale_fetch
@@ -104,7 +104,7 @@ class LocalizableTest < Test::Unit::TestCase
             'en' => '1'
         }
 
-        assert_equal({ 'en' => 'a' }, obj.fieldname_values)
+        assert_equal({ 'en' => 'a' }, obj[:fieldname])
         assert_equal 1, obj.fieldname('en')
     end
 

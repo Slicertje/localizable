@@ -40,7 +40,7 @@ module Localizable
     module ClassMethods
 
         def localized_key (fieldname, type = String)
-            key "#{fieldname}_values".to_sym, Hash
+            key fieldname, Hash
             localized_type[fieldname] = type
 
             self.class_eval <<-end_eval
@@ -66,22 +66,19 @@ module Localizable
     module InstanceMethods
 
         def fetch_localized_value (fieldname, locale, default_text)
-            field = "#{fieldname}_values".to_sym
             locale ||= Localizable.fetch_default_locale
             locale_str = Localizable.locale_to_string(locale)
 
-            if self[field].key?(locale_str)
-                localized_type[fieldname].from_mongo(self[field][locale_str])
+            if self[fieldname].key?(locale_str)
+                localized_type[fieldname].from_mongo(self[fieldname][locale_str])
             else
                 default_text
             end
         end
 
         def store_localized_values (fieldname, mapping)
-            field = "#{fieldname}_values".to_sym
-
             mapping.each do |locale, value|
-                self[field][locale] = localized_type[fieldname].to_mongo(value)
+                self[fieldname][locale] = localized_type[fieldname].to_mongo(value)
             end
         end
 
